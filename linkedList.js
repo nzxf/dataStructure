@@ -80,7 +80,6 @@ class LinkedList {
       node = node.next;
     }
     prev.next = null;
-    // TODO: how to delete node?
   }
 
   // CONTAIN
