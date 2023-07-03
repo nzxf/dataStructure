@@ -13,9 +13,9 @@ class LinkedList {
   // ADD TO THE LAST QUEUE
   append(value) {
     let node = this._head;
-    if (node == null) {
+    if (node === null) {
       // SET THE INPUT AS HEAD
-      this._head = value;
+      this._head = new Node(value);
       return;
     }
     while (node.next) {
@@ -23,7 +23,7 @@ class LinkedList {
       node = node.next;
     }
     // SET NEW NODE
-    node.next = value;
+    node.next = new Node(value);
   }
 
   // ADD TO THE FIRST QUEUE
@@ -31,9 +31,9 @@ class LinkedList {
     // ORIGIN HEAD
     let node = this._head;
     // REPLACE ORIGIN HEAD WITH NEW HEAD
-    this._head = value;
+    this._head = new Node(value);
     // PUT ORIGIN HEAD AFTER NEW HEAD
-    value.next = node;
+    this._head.next = node;
   }
 
   // TOTAL SIZE
@@ -71,25 +71,111 @@ class LinkedList {
     return node;
   }
 
+  // REMOVE LAST ELEMENT
+  pop() {
+    let node = this._head;
+    let prev = '';
+    while (node.next) {
+      prev = node;
+      node = node.next;
+    }
+    prev.next = null;
+    // TODO: how to delete node?
+  }
+
+  // CONTAIN
+  contains(value) {
+    let node = this._head;
+    while (node) {
+      if (node.value == value) {
+        return true;
+      }
+      node = node.next;
+    }
+    return false;
+  }
+
+  // FIND
+  find(value) {
+    let node = this._head;
+    let index = 0;
+    while (node) {
+      if (node.value === value) {
+        return index;
+      }
+      node = node.next;
+      index++;
+    }
+    return null;
+  }
+
+  // INSERT
+  insertAt(value, index) {
+    let node = this._head;
+    // HEAD
+    if (index === 0) {
+      this._head = new Node(value);
+      return this._head.next = node;
+    }
+    // BODY
+    let count = 0;
+    let prev = 'none';
+    while (node) {
+      if (count === index) {
+        let newInput = new Node(value);
+        prev.next = newInput;
+        return (newInput.next = node);
+      }
+      prev = node;
+      node = node.next;
+      count++;
+    }
+    // TAIL (OR OVER)
+    let newInput = new Node(value);
+    prev.next = newInput;
+    return (newInput.next = null);
+  }
+
+  // REMOVE
+  remove(index) {
+    let node = this._head;
+    // HEAD
+    if (index === 0){
+      return this._head = node.next
+    }
+    // BODY & TAIL
+    let count = 0;
+    let prev = '';
+    while (node) {
+      if (count === index) {
+        return prev.next = node.next;
+      }
+      prev = node;
+      node = node.next;
+      count++;
+    }
+  }
+
   // PRINT ALL NODES
   toString() {
     let node = this._head;
     let string = '';
     while (node) {
-      string += node.value + '=>';
+      string += `(${node.value})` + ' -> ';
       node = node.next;
     }
-    string += 'null';
+    string += ' null';
     console.log(string);
   }
 }
 
-let newNode = new LinkedList();
-newNode.append(new Node(10));
-newNode.append(new Node(15));
-newNode.append(new Node(20));
-newNode.prepend(new Node(5));
-newNode.prepend(new Node(1));
+let myLists = new LinkedList();
+myLists.append(10);
+myLists.append(15);
+myLists.append(20);
+myLists.prepend(5);
+myLists.prepend(1);
 
-newNode.toString();
-console.log(newNode.index(5));
+myLists.toString();
+myLists.remove(0);
+myLists.toString();
